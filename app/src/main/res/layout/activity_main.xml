@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <SearchView
+        android:id="@+id/main_search_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:background="@color/colorBackgroundLight"
+        android:hint="Buscar..."
+        android:searchIcon="@drawable/doggy"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_search_view"
+        app:srcCompat="@drawable/animalarium" />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:fadeScrollbars="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="16dp">
+
+                <ImageButton
+                    android:id="@+id/ib_envios"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@color/colorBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/envios" />
+
+                <TextView
+                    android:id="@+id/tv_envios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground"
+                    android:backgroundTint="@color/colorBackground"
+                    android:text="Envíos"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="16dp">
+
+                <ImageButton
+                    android:id="@+id/ib_twitter"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@color/colorBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/twitter" />
+
+                <TextView
+                    android:id="@+id/tv_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground"
+                    android:backgroundTint="@color/colorBackground"
+                    android:text="Twitter"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="16dp">
+
+                <ImageButton
+                    android:id="@+id/ib_whatsapp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@color/colorBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/whattsapp" />
+
+                <TextView
+                    android:id="@+id/tv_whatsapp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground"
+                    android:backgroundTint="@color/colorBackground"
+                    android:text="Whatsapp"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="16dp">
+
+                <ImageButton
+                    android:id="@+id/ib_pagos"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@color/colorBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/pagos" />
+
+                <TextView
+                    android:id="@+id/tv_pagos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground"
+                    android:backgroundTint="@color/colorBackground"
+                    android:text="Pagos"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="16dp">
+
+                <ImageButton
+                    android:id="@+id/ib_promociones"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@color/colorBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/promociones" />
+
+                <TextView
+                    android:id="@+id/tv_promociones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground"
+                    android:backgroundTint="@color/colorBackground"
+                    android:text="Promociones"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="16dp">
+
+                <ImageButton
+                    android:id="@+id/ib_peinados"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@color/colorBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/peinados" />
+
+                <TextView
+                    android:id="@+id/tv_peinados"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground"
+                    android:backgroundTint="@color/colorBackground"
+                    android:text="Peinados"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
