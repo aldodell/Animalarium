@@ -499,18 +499,25 @@ class Engine private constructor() {
                         write(fosTmp, datum)
                     }
 
-                    //Chan status on main file
+                    //Change status on main file
                     changeDatumStatus(datum.path, datum.record, Status.DELETED)
                 }
             }
 
+            fosTmp.flush()
             fosTmp.close()
+
             val fis = FileInputStream(fileTmp)
-            val fos = FileOutputStream(file) //Main file
+            val fos = FileOutputStream(file, true) //Main file
+
             //Append datums to main file (database file)
-            if (fis.available() > 0) {
-                fos.write(fis.readBytes())
+            val buffer = ByteArray(1024)
+            while (fis.available() > 0) {
+                fis.read(buffer)
+                fos.write(buffer)
             }
+
+            fos.flush()
             fis.close()
             fos.close()
 
@@ -522,72 +529,6 @@ class Engine private constructor() {
         }
 
     }
-
-
-    /*
-    fun <T : RecordBase> processChanges(objs: List<T>) {
-
-        //  val hashPaths = objs.first().hashPaths()
-        val file2 = File.createTempFile("flumen", "_temp")
-        lateinit var fis: FileInputStream
-        lateinit var fos: FileOutputStream
-
-        try {
-            //Open streams
-            fis = FileInputStream(file)
-            fos = FileOutputStream(file2)
-
-            //Leemos cada datum en el origen
-            while (fis.available() > 0) {
-                read(fis)?.let { datum ->
-
-                    //Buscamos entre nuestros objetos los que tengan el mismo record que el datum
-                    // y ademas contengan un path igual al datum
-                    val myObjs =
-                        objs.filter {
-                            it.record == datum.record && it.paths().contains(datum.path)
-                        }
-
-                    //Si no hay ningún objeto que cumpla lo anterior significa que es un datum
-                    //Que no está conforme con el modelo T. Simplemente lo pasamos al nuevo archivo
-                    if (myObjs.isEmpty()) {
-                        write(fos, datum)
-                    } else {
-                        //En rigor debería ser devuelto un array con el único objeto conseguido
-                        // Si hay varios(cosa anómala...) tomamos el último
-                        val myObj = myObjs.last()
-
-                        //Escribimos el datum del último objeto
-                        val myDatum = myObj.datumBy(datum.path)!!
-
-                        //Analizamos el status de cada datum
-                        //Si es NORMAL quiere pasamos el mismo datum del archivo
-                        //Si es UPDATE pasamos el actualizado
-                        //Si es otro (como DELETE) lo ignoramos.
-                        when (myDatum.status) {
-                            Status.NORMAL ->
-                                write(fos, datum)
-                            Status.UPDATE ->
-                                write(fos, myDatum)
-                            Status.DELETED ->
-                                println("DELETE")
-                            // nothing to do
-                        }
-                    }
-                }
-            }
-
-            fis.close()
-            fos.close()
-            file.delete()
-            file2.renameTo(file)
-
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-    }
-
-     */
 }
 
 

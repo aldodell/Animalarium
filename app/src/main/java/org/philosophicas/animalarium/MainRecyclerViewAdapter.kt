@@ -1,12 +1,17 @@
 package org.philosophicas.animalarium
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.product_card.*
 
 
 class MainRecyclerViewAdapter(val products: List<Product>) :
@@ -83,6 +88,54 @@ class MainRecyclerViewAdapter(val products: List<Product>) :
         holder.description.text = products[position].description
         holder.price.text = products[position].price
         holder.name.text = products[position].name
+        if (editMode) {
+            holder.editButton.visibility = View.VISIBLE
+            holder.deleteButton.visibility = View.VISIBLE
+
+            holder.editButton.setOnClickListener {
+                val ctx = holder.editButton.context
+                var intent = Intent(ctx, ProductEditorActivity::class.java)
+                intent.putExtra("ID", position)
+                intent.putExtra("ACTION", ProductEditorActivity.Companion.Action.Update.name)
+                ctx.startActivity(intent)
+            }
+
+
+
+            holder.deleteButton.setOnClickListener {
+                if (position > -1) {
+                    AlertDialog.Builder(holder.deleteButton.context, R.style.AppTheme)
+                        .setMessage("¿Deseas eliminar el producto?")
+                        .setPositiveButton("Sí") { _, _ ->
+                            eng.query<Product> { it.record == position }.firstOrNull()?.let { p ->
+                                p.remove()
+                                eng.update(arrayOf(p).toList())
+                                Toast.makeText(
+                                    holder.deleteButton.context,
+                                    "Producto eliminado",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                        .setNegativeButton("No") { _, _ ->
+                            //this.finish()
+                        }
+                        .create().show()
+                }
+            }
+
+/*
+            holder.deleteButton.setOnClickListener {
+                val ctx = holder.editButton.context
+                var intent = Intent(ctx, ProductEditorActivity::class.java)
+                intent.putExtra("ID", position)
+                intent.putExtra("ACTION", ProductEditorActivity.Companion.Action.Delete.name)
+                ctx.startActivity(intent)
+            }
+
+ */
+
+        }
 
     }
 
@@ -91,6 +144,10 @@ class MainRecyclerViewAdapter(val products: List<Product>) :
         var description: TextView = itemView.findViewById(R.id.product_description)
         var price: TextView = itemView.findViewById(R.id.product_price)
         var name: TextView = itemView.findViewById(R.id.product_name)
+        var editButton: Button = itemView.findViewById(R.id.product_edit_button)
+        var deleteButton: Button = itemView.findViewById(R.id.product_delete_button)
     }
 
+
 }
+

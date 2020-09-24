@@ -221,10 +221,6 @@ open class RecordBase {
         return null
     }
 
-
-
-
-
     fun remove() {
         status = Status.DELETED
     }

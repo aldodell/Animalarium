@@ -10,13 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import org.philosophicas.flumen.Engine
-import org.philosophicas.flumen.Status
 
 private var dataBaseFileName = "animalarium.db"
 lateinit var eng: Engine
+var editMode = false
 
 class MainActivity : AppCompatActivity() {
 
@@ -104,43 +102,22 @@ class MainActivity : AppCompatActivity() {
         }
     }*/
 
+    override fun onResume() {
+        super.onResume()
+        eng = Engine(this, dataBaseFileName)
+        products = eng.query(null)
+        recyclerView.adapter = MainRecyclerViewAdapter(products)
+        recyclerView.adapter!!.notifyDataSetChanged()
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        // downloadData(this.applicationContext)
-
-        eng = Engine(this, dataBaseFileName)
-        products = eng.query(null)
-
-
-        val product = products.first()
-        product.name = "Gatarina"
-        product.update()
-        eng.update(arrayOf(product).toList())
-
-
-        /*
-         products = eng.query(null)
-         val product = products.first()
-         product.remove()
-         eng.update(arrayOf(product).toList())
- */
-
         searcher = findViewById(R.id.main_search_view)
         recyclerView = findViewById(R.id.main_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-
-        runBlocking(Dispatchers.IO) {
-            //products = db.productDao().getAll()
-            recyclerView.adapter = MainRecyclerViewAdapter(products)
-            recyclerView.adapter!!.notifyDataSetChanged()
-        }
-
-
 
         searcher.setOnSearchClickListener {
             it as SearchView
@@ -150,9 +127,16 @@ class MainActivity : AppCompatActivity() {
         searcher.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 if (p0 == "cargar") {
-                    var intent = Intent(this@MainActivity, LoadProductActivity::class.java)
+                    var intent = Intent(this@MainActivity, ProductEditorActivity::class.java)
+                    intent.putExtra("ACTION", ProductEditorActivity.Companion.Action.Add.name)
                     this@MainActivity.startActivity(intent)
+                } else if (p0 == "editar") {
+                    editMode = true
+                    recyclerView.invalidate()
+                    recyclerView.adapter!!.notifyDataSetChanged()
                 }
+
+
                 return true
             }
 
