@@ -1,3 +1,2 @@
-include ':flumen'
 include ':app'
 rootProject.name = "Animalarium"

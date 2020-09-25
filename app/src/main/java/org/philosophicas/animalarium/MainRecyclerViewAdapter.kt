@@ -9,15 +9,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.product_card.*
+import com.google.firebase.firestore.FirebaseFirestore
 
 
-class MainRecyclerViewAdapter(val products: List<Product>) :
+class MainRecyclerViewAdapter(val products: List<ProductModel>) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
 
     var viewHolder: ViewHolder? = null
+    val db = FirebaseFirestore.getInstance()
 
 
     /**
@@ -58,7 +58,8 @@ class MainRecyclerViewAdapter(val products: List<Product>) :
      * @return The total number of items in this adapter.
      */
     override fun getItemCount(): Int {
-        return products.size
+       return products.size
+
     }
 
     /**
@@ -83,6 +84,7 @@ class MainRecyclerViewAdapter(val products: List<Product>) :
      * @param position The position of the item within the adapter's data set.
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val ba = products[position].image!!
         holder.image.setImageBitmap(BitmapFactory.decodeByteArray(ba, 0, ba.size))
         holder.description.text = products[position].description
@@ -107,37 +109,15 @@ class MainRecyclerViewAdapter(val products: List<Product>) :
                     AlertDialog.Builder(holder.deleteButton.context, R.style.AppTheme)
                         .setMessage("¿Deseas eliminar el producto?")
                         .setPositiveButton("Sí") { _, _ ->
-                            eng.query<Product> { it.record == position }.firstOrNull()?.let { p ->
-                                p.remove()
-                                eng.update(arrayOf(p).toList())
-                                Toast.makeText(
-                                    holder.deleteButton.context,
-                                    "Producto eliminado",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                        .setNegativeButton("No") { _, _ ->
-                            //this.finish()
-                        }
-                        .create().show()
+
+                        }.show()
                 }
+
+
             }
-
-/*
-            holder.deleteButton.setOnClickListener {
-                val ctx = holder.editButton.context
-                var intent = Intent(ctx, ProductEditorActivity::class.java)
-                intent.putExtra("ID", position)
-                intent.putExtra("ACTION", ProductEditorActivity.Companion.Action.Delete.name)
-                ctx.startActivity(intent)
-            }
-
- */
-
         }
-
     }
+
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var image: ImageView = itemView.findViewById(R.id.product_image)

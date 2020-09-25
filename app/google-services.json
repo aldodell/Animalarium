@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "989092499399",
+    "firebase_url": "https://animalarium-19fc3.firebaseio.com",
+    "project_id": "animalarium-19fc3",
+    "storage_bucket": "animalarium-19fc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989092499399:android:901909db3c27c0d1e313e2",
+        "android_client_info": {
+          "package_name": "org.philosophicas.animalarium"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "989092499399-7ngj8usudkieus6uh0bda81unesnb1tv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeh1lq3lAx5XLKQTTzt5Pv37Hql7mEYe8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "989092499399-7ngj8usudkieus6uh0bda81unesnb1tv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

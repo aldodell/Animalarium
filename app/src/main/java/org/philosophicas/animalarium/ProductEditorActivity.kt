@@ -13,6 +13,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_load_product.*
 import java.io.ByteArrayOutputStream
 
@@ -36,55 +38,47 @@ class ProductEditorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_load_product)
 
+        // Access a Cloud Firestore instance from your Activity
+        val db = FirebaseFirestore.getInstance()
+
 
         val intent = getIntent()
         val ID = intent.getIntExtra("ID", -1)
         val action: Action = Action.valueOf(intent.getStringExtra("ACTION")!!)
 
-
-        eng.query<Product> { it.record == ID }.firstOrNull()?.let { p ->
-            etName.text.append(p.name)
-            etPrice.text.append(p.price)
-            etDescription.text.append(p.description)
-            val bm = BitmapFactory.decodeByteArray(p.image, 0, p.image!!.size)
-            ivLoader.setImageBitmap(bm)
-        }
-
-
         btnSave.setOnClickListener {
-
+            val storageReference = FirebaseStorage.getInstance().reference
             val bmos = ByteArrayOutputStream()
             val bm = ivLoader.drawable as BitmapDrawable
             bm.bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bmos)
 
-            val p = Product()
-            p.name = etName.text.toString()
-            p.price = etPrice.text.toString()
-            p.description = etDescription.text.toString()
-            p.image = bmos.toByteArray()
+            storageReference.putBytes(bmos.toByteArray())
+            val bucket = storageReference.bucket
 
 
-            when (action) {
+            val product = hashMapOf(
+                "name" to etName.text.toString(),
+                "description" to etDescription.text.toString(),
+                "price" to etPrice.text.toString(),
+                "image" to bucket
+            )
 
-                Action.Add -> {
-                    eng.newRecord(p)
-                    Toast.makeText(this, "Producto nuevo guardado", Toast.LENGTH_SHORT).show()
-                    this.finish()
-                }
+            if (action == Action.Add) {
 
-                Action.Update -> {
-                    AlertDialog.Builder(this, R.style.AppTheme)
-                        .setMessage("¿Deseas modificar el producto?")
-                        .setPositiveButton("Sí") { _, _ ->
-                            p.update()
-                            eng.update(arrayOf(p).toList())
-                            Toast.makeText(this, "Producto actualizado", Toast.LENGTH_SHORT).show()
-                        }
-                        .setNegativeButton("No") { _, _ ->
-                            this.finish()
-                        }
-                        .create().show()
-                }
+                db.collection("products")
+                    .add(product)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Producto agregado", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(
+                            this,
+                            "Error agregado producto:" + it.message,
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
             }
         }
 

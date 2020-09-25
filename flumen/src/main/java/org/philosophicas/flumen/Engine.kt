@@ -100,7 +100,7 @@ class Engine private constructor() {
      * @param stream OutputStream object which will have bianary data.
      * @param datum Datum object to be processed.
      */
-    fun write(stream: OutputStream, datum: Datum) {
+    private fun write(stream: OutputStream, datum: Datum) {
         var baos = ByteArrayOutputStream()
         baos.write(datum.binary)
         baos.writeTo(stream)
@@ -224,8 +224,6 @@ class Engine private constructor() {
             pathSize = buffer.int
             //payload size
             payloadSize = buffer.int
-
-
 
             if (pathHash == path.hashCode() && mRecord == record) {
                 if (payload.size > payloadSize) {

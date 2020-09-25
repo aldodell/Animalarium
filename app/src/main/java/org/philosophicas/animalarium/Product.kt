@@ -1,3 +1,4 @@
+/*
 package org.philosophicas.animalarium
 
 import org.philosophicas.flumen.RecordBaseAnnotation
@@ -19,3 +20,4 @@ class Product : RecordBase() {
     @property:RecordBaseAnnotation("/products/image", DatumType.Bytes)
     var image: ByteArray? = null
 }
+*/
