@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_load_product.*
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 
 class ProductEditorActivity : AppCompatActivity() {
@@ -32,7 +33,7 @@ class ProductEditorActivity : AppCompatActivity() {
 
     val PERMISSION_CODE = 1000
     val IMAGE_PICK_CODE = 1001
-
+    var product = ProductModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,46 +41,69 @@ class ProductEditorActivity : AppCompatActivity() {
 
         // Access a Cloud Firestore instance from your Activity
         val db = FirebaseFirestore.getInstance()
-
-
         val intent = getIntent()
-        val ID = intent.getIntExtra("ID", -1)
+        val ID = intent.getStringExtra("ID")
         val action: Action = Action.valueOf(intent.getStringExtra("ACTION")!!)
 
+        //Get product if exits
+        if (ID != null) {
+            db.document("products/$ID").get().addOnSuccessListener { document ->
+                product.apply {
+                    id = document.id
+                    name = document[name!!] as String
+                    description = document[description!!] as String
+                    image = document[image!!] as String
+                    price = document[price!!] as String
+                }
+            }
+        }
+
+
+
+
         btnSave.setOnClickListener {
-            val storageReference = FirebaseStorage.getInstance().reference
-            val bmos = ByteArrayOutputStream()
-            val bm = ivLoader.drawable as BitmapDrawable
-            bm.bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bmos)
-
-            storageReference.putBytes(bmos.toByteArray())
-            val bucket = storageReference.bucket
-
-
             val product = hashMapOf(
                 "name" to etName.text.toString(),
                 "description" to etDescription.text.toString(),
                 "price" to etPrice.text.toString(),
-                "image" to bucket
+                "image" to ""
             )
 
-            if (action == Action.Add) {
+            when (action) {
+                Action.Add -> {
+                    db.collection("products")
+                        .add(product)
+                        .addOnSuccessListener {
+                            it.update("image", it.id)
+                            sendImage(it.id)
+                            Toast.makeText(this, "Producto agregado", Toast.LENGTH_LONG)
+                                .show()
 
-                db.collection("products")
-                    .add(product)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Producto agregado", Toast.LENGTH_LONG)
-                            .show()
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(
-                            this,
-                            "Error agregado producto:" + it.message,
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
-                    }
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(
+                                this,
+                                "Error agregando producto:" + it.message,
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
+
+
+                }
+
+                Action.Update -> {
+                    val path = "products/" + ID!!
+                    db.document(path).update(product.toMap())
+                    val id = db.document(path).id
+                    deleteImage(id)
+                    sendImage(id)
+
+                }
+
+
             }
+
         }
 
         btnPickImage.setOnClickListener {
@@ -93,6 +117,41 @@ class ProductEditorActivity : AppCompatActivity() {
             }
         }
 
+
+
+        if (action == Action.Delete) {
+            /*
+              val path = "products/" + ID!!
+              deleteImage(ID)
+              db.document(path).delete()
+
+             */
+
+
+            deleteProduct(ID!!)
+            finishActivity(0)
+        }
+
+    }
+
+    fun sendImage(id: String) {
+        val bmos = ByteArrayOutputStream()
+        val bm = ivLoader.drawable as BitmapDrawable
+        bm.bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bmos)
+        val storageReference = FirebaseStorage.getInstance().reference
+        val imageReference =
+            storageReference.child("products/images/" + id)
+        imageReference.putBytes(bmos.toByteArray())
+        bmos.close()
+
+    }
+
+
+    fun deleteImage(id: String) {
+        val storageReference = FirebaseStorage.getInstance().reference
+        val imageReference =
+            storageReference.child("products/images/" + id)
+        imageReference.delete()
 
     }
 

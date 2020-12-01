@@ -6,6 +6,4 @@ class ProductModel {
     var description: String? = null
     var price: String? = null
     var image: String? = null
-
-
 }

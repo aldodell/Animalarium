@@ -12,30 +12,38 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="16dp"
         android:background="@color/colorBackground"
         app:cardBackgroundColor="@color/colorBackgroundLight"
         app:cardCornerRadius="12dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/product_image"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:background="@color/colorBackgroundLight"
-                android:minHeight="100dp"
                 android:scaleType="fitXY"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/product_name"
+                app:layout_constraintTop_toBottomOf="@id/product_name"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
@@ -62,39 +70,39 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/product_description" />
 
-            <TextView
-                android:id="@+id/product_name"
-                android:layout_width="0dp"
+            <Button
+                android:id="@+id/product_buy_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="TextView"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_buy_background"
+                android:padding="16dp"
+                android:text="¡Cómprame!"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/product_description" />
 
             <Button
                 android:id="@+id/product_edit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="Editar"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/product_price" />
+                app:layout_constraintTop_toTopOf="@id/product_buy_button" />
 
 
             <Button
                 android:id="@+id/product_delete_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="Eliminar"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/product_edit_button" />
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@+id/product_edit_button"
+                app:layout_constraintTop_toTopOf="@+id/product_edit_button" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

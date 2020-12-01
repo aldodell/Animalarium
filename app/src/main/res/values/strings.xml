@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Animalarium</string>
+    <string name="unknow">desconocido</string>
+    <string name="delivering">entregando</string>
+    <string name="processing">procesando</string>
+    <string name="send">enviado</string>
+    <string name="recibido">recibido</string>
 </resources>
