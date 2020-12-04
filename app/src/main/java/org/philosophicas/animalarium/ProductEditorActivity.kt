@@ -2,22 +2,18 @@ package org.philosophicas.animalarium
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_load_product.*
 import java.io.ByteArrayOutputStream
-import java.util.*
 
 
 class ProductEditorActivity : AppCompatActivity() {
@@ -120,14 +116,6 @@ class ProductEditorActivity : AppCompatActivity() {
 
 
         if (action == Action.Delete) {
-            /*
-              val path = "products/" + ID!!
-              deleteImage(ID)
-              db.document(path).delete()
-
-             */
-
-
             deleteProduct(ID!!)
             finishActivity(0)
         }

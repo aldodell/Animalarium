@@ -1,2 +1,3 @@
+include ':animalariummanager'
 include ':app'
 rootProject.name = "Animalarium"
